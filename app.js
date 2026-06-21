@@ -7,6 +7,7 @@ const state = {
     timerInterval: null,
     timerStartTime: null,
     isTimerRunning: false,
+    practiceStarted: false,
 };
 
 // ===========================
@@ -22,14 +23,16 @@ const STORAGE_KEYS = {
 document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
     setupEventListeners();
-    generateNewProblem();
     loadHistory();
     updateStatistics();
+    updateSessionStats();
 });
 
 function initializeApp() {
     loadHistory();
     updateSessionStats();
+    // Show initial state with Generate button
+    showInitialState();
 }
 
 function setupEventListeners() {
@@ -37,6 +40,7 @@ function setupEventListeners() {
         btn.addEventListener('click', switchTab);
     });
 
+    document.getElementById('generateBtn').addEventListener('click', startPractice);
     document.getElementById('submitBtn').addEventListener('click', submitAnswer);
     document.getElementById('answerInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') submitAnswer();
@@ -46,6 +50,39 @@ function setupEventListeners() {
     document.getElementById('clearHistoryBtn').addEventListener('click', clearAllData);
 
     document.getElementById('answerInput').focus();
+}
+
+// ===========================
+// INITIAL STATE
+// ===========================
+function showInitialState() {
+    // Hide problem display
+    document.getElementById('num1').textContent = '--';
+    document.getElementById('num2').textContent = '--';
+    
+    // Reset input
+    document.getElementById('answerInput').value = '';
+    document.getElementById('answerInput').disabled = true;
+    
+    // Reset timer
+    resetTimer();
+    
+    // Clear feedback
+    clearFeedback();
+    
+    // Update button states
+    document.getElementById('generateBtn').disabled = false;
+    document.getElementById('newProblemBtn').disabled = true;
+    document.getElementById('submitBtn').disabled = true;
+    
+    state.practiceStarted = false;
+}
+
+function startPractice() {
+    state.practiceStarted = true;
+    generateNewProblem();
+    document.getElementById('generateBtn').style.display = 'none';
+    document.getElementById('newProblemBtn').style.display = 'inline-block';
 }
 
 // ===========================
@@ -98,7 +135,12 @@ function generateNewProblem() {
 
     const input = document.getElementById('answerInput');
     input.value = '';
+    input.disabled = false;
     input.focus();
+
+    // Enable submit button
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('newProblemBtn').disabled = true;
 
     startTimer();
 }
@@ -168,9 +210,11 @@ function submitAnswer() {
         saveToHistory(solve);
         updateSessionStats();
 
-        setTimeout(() => {
-            generateNewProblem();
-        }, 1000);
+        // Disable input and submit, enable next problem button
+        document.getElementById('answerInput').disabled = true;
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('newProblemBtn').disabled = false;
+
     } else {
         showFeedback(`✗ Incorrect! Answer is ${state.currentProblem.answer}`, 'incorrect');
 
@@ -229,7 +273,8 @@ function resetSession() {
     if (confirm('Reset current session? Your history will be preserved.')) {
         state.sessionSolves = [];
         updateSessionStats();
-        generateNewProblem();
+        showInitialState();
+        stopTimer();
     }
 }
 
