@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Trainer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Multiplication Trainer</h1>
+            <p class="subtitle">Master mental multiplication</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="practice">
+                <span class="tab-icon">🎯</span> Practice
+            </button>
+            <button class="tab-btn" data-tab="learn">
+                <span class="tab-icon">📚</span> Learn
+            </button>
+            <button class="tab-btn" data-tab="statistics">
+                <span class="tab-icon">📊</span> Statistics
+            </button>
+        </nav>
+
+        <!-- Practice Tab -->
+        <section id="practice" class="tab-content active">
+            <div class="practice-container">
+                <div class="problem-display">
+                    <div class="problem">
+                        <span class="number" id="num1">00</span>
+                        <span class="operator">×</span>
+                        <span class="number" id="num2">00</span>
+                        <span class="equals">=</span>
+                        <span class="question">?</span>
+                    </div>
+                </div>
+
+                <div class="timer-display">
+                    <div class="timer" id="timer">0.00s</div>
+                </div>
+
+                <div class="input-section">
+                    <input 
+                        type="number" 
+                        id="answerInput" 
+                        placeholder="Enter your answer" 
+                        class="answer-input"
+                        autocomplete="off"
+                    >
+                    <button id="submitBtn" class="submit-btn">Submit</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-label">Problems Solved</div>
+                        <div class="stat-value" id="solvedCount">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Session Best</div>
+                        <div class="stat-value" id="sessionBest">—</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Session Average</div>
+                        <div class="stat-value" id="sessionAvg">—</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="newProblemBtn" class="secondary-btn">Next Problem</button>
+                    <button id="resetSessionBtn" class="secondary-btn danger">Reset Session</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learn Tab -->
+        <section id="learn" class="tab-content">
+            <div class="learn-container">
+                <h2>Mental Multiplication Techniques</h2>
+
+                <div class="method">
+                    <h3>📌 Method 1: Vedic Cross Multiplication (Urdhva-Tiryagbhyam)</h3>
+                    <p>This ancient Indian technique breaks down the multiplication into simple steps.</p>
+                    
+                    <div class="example">
+                        <h4>Example: 23 × 17</h4>
+                        <div class="steps">
+                            <div class="step">
+                                <span class="step-num">1</span>
+                                <div>
+                                    <strong>Rightmost digits:</strong> 3 × 7 = 21
+                                    <div class="code">Write 1, carry 2</div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">2</span>
+                                <div>
+                                    <strong>Criss-cross:</strong> (2 × 7) + (3 × 1) = 14 + 3 = 17
+                                    <div class="code">Add carry: 17 + 2 = 19. Write 9, carry 1</div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">3</span>
+                                <div>
+                                    <strong>Leftmost digits:</strong> 2 × 1 = 2
+                                    <div class="code">Add carry: 2 + 1 = 3</div>
+                                </div>
+                            </div>
+                            <div class="result">
+                                <strong>Result: 391</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h3>📌 Method 2: Breakdown Method</h3>
+                    <p>Split one number and multiply separately, then add results.</p>
+                    
+                    <div class="example">
+                        <h4>Example: 34 × 26</h4>
+                        <div class="steps">
+                            <div class="step">
+                                <span class="step-num">1</span>
+                                <div>
+                                    <strong>Break down:</strong> 26 = 20 + 6
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">2</span>
+                                <div>
+                                    <strong>Multiply each part:</strong><br>
+                                    34 × 20 = 680<br>
+                                    34 × 6 = 204
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">3</span>
+                                <div>
+                                    <strong>Add together:</strong> 680 + 204 = 884
+                                </div>
+                            </div>
+                            <div class="result">
+                                <strong>Result: 884</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method">
+                    <h3>📌 Method 3: Number Close to Base</h3>
+                    <p>Useful when both numbers are near a round number (like 100).</p>
+                    
+                    <div class="example">
+                        <h4>Example: 98 × 97</h4>
+                        <div class="steps">
+                            <div class="step">
+                                <span class="step-num">1</span>
+                                <div>
+                                    <strong>Differences from 100:</strong><br>
+                                    98 is 2 below 100<br>
+                                    97 is 3 below 100
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">2</span>
+                                <div>
+                                    <strong>Step 1:</strong> Subtract difference from other number<br>
+                                    98 - 3 = 95 (or 97 - 2 = 95)
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">3</span>
+                                <div>
+                                    <strong>Step 2:</strong> Multiply the differences<br>
+                                    2 × 3 = 6
+                                </div>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">4</span>
+                                <div>
+                                    <strong>Combine:</strong> 9500 - 6 = 9494
+                                </div>
+                            </div>
+                            <div class="result">
+                                <strong>Result: 9506</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <h3>💡 Tips for Faster Multiplication</h3>
+                    <ul>
+                        <li><strong>Practice regularly:</strong> Start slow, speed comes with repetition</li>
+                        <li><strong>Memorize 2-digit squares:</strong> Numbers ending in 0-9 squared (10²-99²)</li>
+                        <li><strong>Break large numbers:</strong> Split into smaller, manageable chunks</li>
+                        <li><strong>Use reference numbers:</strong> Work from nearest round number (10, 20, 100, etc.)</li>
+                        <li><strong>Visualize:</strong> Picture the numbers in your mind as you calculate</li>
+                        <li><strong>Check answers:</strong> Use reverse estimation to verify results</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Tab -->
+        <section id="statistics" class="tab-content">
+            <div class="statistics-container">
+                <h2>Your Performance Statistics</h2>
+
+                <div class="stats-summary">
+                    <div class="summary-card">
+                        <div class="summary-label">Total Attempts</div>
+                        <div class="summary-value" id="totalAttempts">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Success Rate</div>
+                        <div class="summary-value" id="successRate">0%</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">Personal Best</div>
+                        <div class="summary-value" id="personalBest">—</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-label">All-Time Average</div>
+                        <div class="summary-value" id="overallAverage">—</div>
+                    </div>
+                </div>
+
+                <div class="averages-section">
+                    <h3>Rolling Averages (Speedcubing Style)</h3>
+                    <div class="averages-grid">
+                        <div class="average-card">
+                            <div class="avg-label">AO5</div>
+                            <div class="avg-value" id="ao5">—</div>
+                            <div class="avg-detail" id="ao5-detail"></div>
+                        </div>
+                        <div class="average-card">
+                            <div class="avg-label">AO12</div>
+                            <div class="avg-value" id="ao12">—</div>
+                            <div class="avg-detail" id="ao12-detail"></div>
+                        </div>
+                        <div class="average-card">
+                            <div class="avg-label">AO50</div>
+                            <div class="avg-value" id="ao50">—</div>
+                            <div class="avg-detail" id="ao50-detail"></div>
+                        </div>
+                        <div class="average-card">
+                            <div class="avg-label">AO100</div>
+                            <div class="avg-value" id="ao100">—</div>
+                            <div class="avg-detail" id="ao100-detail"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h3>Solve Times Over Session</h3>
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>Solve Time Distribution</h3>
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h3>Recent Solves</h3>
+                    <div class="history-controls">
+                        <button id="clearHistoryBtn" class="secondary-btn danger">Clear All Data</button>
+                    </div>
+                    <div class="history-table-wrapper">
+                        <table class="history-table" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Problem</th>
+                                    <th>Your Answer</th>
+                                    <th>Time (s)</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody">
+                                <tr class="empty-state">
+                                    <td colspan="5">No data yet. Start practicing!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
