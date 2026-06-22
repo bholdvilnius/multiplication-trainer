@@ -204,7 +204,9 @@ function showInitialState() {
     
     // Update button states
     document.getElementById('generateBtn').disabled = false;
+    document.getElementById('generateBtn').style.display = 'inline-block';
     document.getElementById('newProblemBtn').disabled = true;
+    document.getElementById('newProblemBtn').style.display = 'none';
     document.getElementById('submitBtn').disabled = true;
     
     state.practiceStarted = false;
